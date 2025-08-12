@@ -145,11 +145,11 @@ describe("DiscountStrategy (abstract base)", () => {
           super();
           this.factor = 0.2;
         }
-        
+
         calculate(cart) {
           return (cart.total || 0) * this.factor;
         }
-        
+
         setFactor(factor) {
           this.factor = factor;
         }
@@ -166,7 +166,7 @@ describe("DiscountStrategy (abstract base)", () => {
           this.name = "Test Strategy";
           this.enabled = true;
         }
-        
+
         calculate(cart) {
           return this.enabled ? 10 : 0;
         }
@@ -220,7 +220,9 @@ describe("DiscountStrategy (abstract base)", () => {
       try {
         new DiscountStrategy();
       } catch (error) {
-        expect(error.message).toBe("DiscountStrategy is abstract and cannot be used directly.");
+        expect(error.message).toBe(
+          "DiscountStrategy is abstract and cannot be used directly.",
+        );
       }
     });
 
@@ -230,14 +232,16 @@ describe("DiscountStrategy (abstract base)", () => {
       try {
         strategy.calculate({});
       } catch (error) {
-        expect(error.message).toBe("Subclasses must implement calculate method.");
+        expect(error.message).toBe(
+          "Subclasses must implement calculate method.",
+        );
       }
     });
 
     test("error messages are descriptive", () => {
       expect(() => new DiscountStrategy()).toThrow(/abstract/);
       expect(() => new DiscountStrategy()).toThrow(/cannot be used directly/);
-      
+
       class NoopStrategy extends DiscountStrategy {}
       const strategy = new NoopStrategy();
       expect(() => strategy.calculate({})).toThrow(/Subclasses must implement/);
@@ -277,8 +281,12 @@ describe("DiscountStrategy (abstract base)", () => {
       }
       const strategy = new TestStrategy();
       expect(Object.getPrototypeOf(strategy)).toBe(TestStrategy.prototype);
-      expect(Object.getPrototypeOf(TestStrategy.prototype)).toBe(DiscountStrategy.prototype);
-      expect(Object.getPrototypeOf(DiscountStrategy.prototype)).toBe(Object.prototype);
+      expect(Object.getPrototypeOf(TestStrategy.prototype)).toBe(
+        DiscountStrategy.prototype,
+      );
+      expect(Object.getPrototypeOf(DiscountStrategy.prototype)).toBe(
+        Object.prototype,
+      );
     });
   });
 
@@ -289,7 +297,7 @@ describe("DiscountStrategy (abstract base)", () => {
           super();
           this.value = 42;
         }
-        
+
         calculate(cart) {
           return this.value;
         }
@@ -308,7 +316,7 @@ describe("DiscountStrategy (abstract base)", () => {
       const strategy = new TestStrategy();
       const context1 = { factor: 2 };
       const context2 = { factor: 3 };
-      
+
       expect(strategy.calculate.call(context1, {})).toBe(2);
       expect(strategy.calculate.call(context2, {})).toBe(3);
     });

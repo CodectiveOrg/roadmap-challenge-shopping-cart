@@ -10,11 +10,11 @@ export class Cart {
   }
 
   get items() {
-    return this.#items.map((item) => item.clone());
+    return [...this.#items];
   }
 
   get total() {
-    return this.#items.reduce((sum, item) => sum + item.subtotal(), 0);
+    return this.#items.reduce((sum, item) => sum + item.subtotal, 0);
   }
 
   addProduct(product, quantity = 1) {
@@ -23,7 +23,7 @@ export class Cart {
     }
 
     if (!Number.isInteger(quantity) || quantity <= 0) {
-      throw new Error("Quantity must be a positive integer");
+      throw new Error("Quantity must be a positive integer.");
     }
 
     const existingItem = this.#items.find(

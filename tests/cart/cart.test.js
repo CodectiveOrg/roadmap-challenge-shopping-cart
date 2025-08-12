@@ -1,17 +1,6 @@
 import { Cart } from "../../src/cart/cart.js";
 import { Product } from "../../src/product/product.js";
 import { DiscountStrategy } from "../../src/discount-strategy/discount-strategy.js";
-import { CartItem } from "../../src/cart/cart-item.js";
-
-// The Cart implementation calls item.clone() when exposing items.
-// Provide a minimal clone implementation for CartItem instances for test visibility.
-beforeAll(() => {
-  if (typeof CartItem.prototype.clone !== "function") {
-    CartItem.prototype.clone = function clone() {
-      return { product: this.product, quantity: this.quantity };
-    };
-  }
-});
 
 describe("Cart", () => {
   describe("initialization", () => {
@@ -40,6 +29,14 @@ describe("Cart", () => {
       const items1 = cart.items;
       const items2 = cart.items;
       expect(items1).not.toBe(items2);
+    });
+
+    test("items array contains the same CartItem instances", () => {
+      const cart = new Cart();
+      const product = new Product("Apple", 2);
+      cart.addProduct(product, 3);
+      const items = cart.items;
+      expect(items[0]).toBe(cart.items[0]);
     });
   });
 
@@ -832,10 +829,7 @@ describe("Cart", () => {
       const cart = new Cart();
       const product = new Product("Apple", 2);
       cart.addProduct(product, 3);
-      // Note: cart.total calls item.subtotal() which will fail due to implementation mismatch
-      // This test verifies the structure but not the calculation
-      expect(cart.items.length).toBe(1);
-      expect(cart.items[0].quantity).toBe(3);
+      expect(cart.total).toBe(6);
     });
 
     test("total getter returns correct total for multiple items", () => {
@@ -844,11 +838,7 @@ describe("Cart", () => {
       const product2 = new Product("Banana", 1);
       cart.addProduct(product1, 3);
       cart.addProduct(product2, 2);
-      // Note: cart.total calls item.subtotal() which will fail due to implementation mismatch
-      // This test verifies the structure but not the calculation
-      expect(cart.items.length).toBe(2);
-      expect(cart.items[0].quantity).toBe(3);
-      expect(cart.items[1].quantity).toBe(2);
+      expect(cart.total).toBe(8);
     });
 
     test("getters are read-only", () => {
@@ -868,7 +858,9 @@ describe("Cart", () => {
       try {
         cart.addProduct({}, 1);
       } catch (error) {
-        expect(error.message).toBe("Product must be an instance of Product class.");
+        expect(error.message).toBe(
+          "Product must be an instance of Product class.",
+        );
       }
     });
 
@@ -878,7 +870,7 @@ describe("Cart", () => {
       try {
         cart.addProduct(product, 0);
       } catch (error) {
-        expect(error.message).toBe("Quantity must be a positive integer");
+        expect(error.message).toBe("Quantity must be a positive integer.");
       }
     });
 
@@ -887,7 +879,9 @@ describe("Cart", () => {
       try {
         cart.removeProduct({});
       } catch (error) {
-        expect(error.message).toBe("Product must be an instance of Product class.");
+        expect(error.message).toBe(
+          "Product must be an instance of Product class.",
+        );
       }
     });
 
@@ -896,7 +890,9 @@ describe("Cart", () => {
       try {
         cart.applyDiscount({});
       } catch (error) {
-        expect(error.message).toBe("Strategy must be an instance of DiscountStrategy subclass.");
+        expect(error.message).toBe(
+          "Strategy must be an instance of DiscountStrategy subclass.",
+        );
       }
     });
 

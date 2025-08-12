@@ -79,11 +79,39 @@ describe("FixedDiscountStrategy", () => {
       );
     });
 
-    test("current implementation throws ReferenceError due to using 'card' instead of 'cart'", () => {
+    test("calculates correct discount for cart with items", () => {
       const cart = new Cart();
       cart.addProduct(new Product("A", 10), 1);
       const strategy = new FixedDiscountStrategy(5);
-      expect(() => strategy.calculate(cart)).toThrow(/card is not defined/);
+      expect(strategy.calculate(cart)).toBe(5);
+    });
+
+    test("calculates correct discount for cart with multiple items", () => {
+      const cart = new Cart();
+      cart.addProduct(new Product("A", 10), 2);
+      cart.addProduct(new Product("B", 5), 1);
+      const strategy = new FixedDiscountStrategy(8);
+      expect(strategy.calculate(cart)).toBe(8);
+    });
+
+    test("returns amount when cart total is greater than discount amount", () => {
+      const cart = new Cart();
+      cart.addProduct(new Product("A", 10), 3);
+      const strategy = new FixedDiscountStrategy(5);
+      expect(strategy.calculate(cart)).toBe(5);
+    });
+
+    test("returns cart total when discount amount is greater than cart total", () => {
+      const cart = new Cart();
+      cart.addProduct(new Product("A", 10), 1);
+      const strategy = new FixedDiscountStrategy(15);
+      expect(strategy.calculate(cart)).toBe(10);
+    });
+
+    test("returns zero for empty cart", () => {
+      const cart = new Cart();
+      const strategy = new FixedDiscountStrategy(5);
+      expect(strategy.calculate(cart)).toBe(0);
     });
   });
 

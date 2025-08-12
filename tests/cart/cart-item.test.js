@@ -413,7 +413,9 @@ describe("CartItem", () => {
       try {
         new CartItem({}, 1);
       } catch (error) {
-        expect(error.message).toBe("Product must be an instance of Product class.");
+        expect(error.message).toBe(
+          "Product must be an instance of Product class.",
+        );
       }
     });
 

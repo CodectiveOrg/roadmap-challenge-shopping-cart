@@ -205,7 +205,8 @@ describe("Product", () => {
     });
 
     test("accepts very long name", () => {
-      const longName = "This is a very long product name that exceeds normal length expectations and should still work correctly";
+      const longName =
+        "This is a very long product name that exceeds normal length expectations and should still work correctly";
       const product = new Product(longName, 10);
       expect(product.name).toBe(longName);
     });
@@ -240,9 +241,9 @@ describe("Product", () => {
     });
 
     test("rejects minimum safe integer price as it is negative", () => {
-      expect(() => new Product("Min Price Item", Number.MIN_SAFE_INTEGER)).toThrow(
-        "Price must be a non-negative number.",
-      );
+      expect(
+        () => new Product("Min Price Item", Number.MIN_SAFE_INTEGER),
+      ).toThrow("Price must be a non-negative number.");
     });
 
     test("accepts infinity price", () => {

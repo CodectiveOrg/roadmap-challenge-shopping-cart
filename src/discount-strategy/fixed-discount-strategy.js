@@ -19,6 +19,6 @@ export class FixedDiscountStrategy extends DiscountStrategy {
       throw new Error("Cart must be an instance of Cart class.");
     }
 
-    return Math.min(this.#amount, card.total);
+    return Math.min(this.#amount, cart.total);
   }
 }
