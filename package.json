@@ -1,0 +1,11 @@
+{
+  "name": "roadmap-quiz-vanilla-shopping-cart",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/main.js"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
+}
