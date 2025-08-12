@@ -1,4 +1,4 @@
-# Roadmap Quiz: 🛒 Vanilla Shopping Cart 🛒
+# Roadmap Challenge: 🛒 Shopping Cart 🛒
 
 ## What is this project?
 
