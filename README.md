@@ -194,6 +194,19 @@ Export `PercentageDiscountStrategy` that extends `DiscountStrategy`:
 - You may see a Node warning about experimental VM modules; it is expected and harmless.
 - Do not modify tests. Implement the code in `src/` until all tests pass.
 
+## Continuous Integration (CI)
+
+All pull requests run the full Jest test suite automatically in GitHub Actions.
+
+What happens on every PR:
+
+- The repository is checked out on Ubuntu.
+- Node.js 22 is installed.
+- Dependencies are installed with `npm ci`.
+- The test suite runs with `npm test`.
+
+You can see and debug failures directly in the PR checks tab.
+
 ## Error Messages
 
 ### Error 1
