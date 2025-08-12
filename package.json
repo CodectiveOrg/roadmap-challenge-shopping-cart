@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {},
   "devDependencies": {
+    "jest": "^30.0.5",
     "prettier": "^3.6.2"
   }
 }
