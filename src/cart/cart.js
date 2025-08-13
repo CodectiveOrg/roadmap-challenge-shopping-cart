@@ -32,7 +32,7 @@ export class Cart {
   removeProduct(product) {
     if (product instanceof Product) {
       if (this.#items.map((item) => item.name == product.name)) {
-        this.items.splice(0, this.items.length);
+        return this.items.splice(0, this.items.length);
       }
     } else {
       throw new Error("Product must be an instance of Product class.");

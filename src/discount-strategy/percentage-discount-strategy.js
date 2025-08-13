@@ -1,12 +1,22 @@
+import { Cart } from "../cart/cart";
 import { DiscountStrategy } from "./discount-strategy";
 
 export class PercentageDiscountStrategy extends DiscountStrategy {
-  constructor() {
+  #percentage;
+  constructor(percentage) {
     super();
-    if (new.target === DiscountStrategy) {
-      return calculate(cart);
+    if (typeof percentage === "number" && 0 <= percentage <= 100) {
+      this.#percentage = percentage;
     } else {
-      throw new Error("Subclasses must implement calculate method.");
+      throw new Error("Percentage must be a number from 0 to 100.");
+    }
+  }
+
+  calculate(cart) {
+    if (cart instanceof Cart) {
+      return discount;
+    } else {
+      throw new Error("Cart must be an instance of Cart class.");
     }
   }
 }
