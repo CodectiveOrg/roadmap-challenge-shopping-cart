@@ -36,4 +36,8 @@ export class Cart {
   }
 
   applyDiscount(strategy) {}
+
+  static cartValidation(product, quantity) {
+    return Product.productValidation(product) && Number.isInteger(quantity);
+  }
 }
