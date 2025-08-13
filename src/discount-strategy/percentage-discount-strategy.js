@@ -5,7 +5,11 @@ export class PercentageDiscountStrategy extends DiscountStrategy {
   #percentage;
   constructor(percentage) {
     super();
-    if (typeof percentage === "number" && 0 <= percentage <= 100) {
+    if (
+      typeof percentage === "number" &&
+      percentage >= 0 &&
+      percentage <= 100
+    ) {
       this.#percentage = percentage;
     } else {
       throw new Error("Percentage must be a number from 0 to 100.");
@@ -14,7 +18,7 @@ export class PercentageDiscountStrategy extends DiscountStrategy {
 
   calculate(cart) {
     if (cart instanceof Cart) {
-      return discount;
+      return cart.applyDiscount(this);
     } else {
       throw new Error("Cart must be an instance of Cart class.");
     }
