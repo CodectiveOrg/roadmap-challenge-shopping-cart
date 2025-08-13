@@ -3,6 +3,7 @@ import { Product } from "../product/product.js";
 export class CartItem {
   #product;
   #quantity;
+
   constructor(product, quantity) {
     if (!Product.productValidation(product)) {
       throw new Error("Product must be an instance of Product class.");

@@ -8,6 +8,7 @@ export class Product {
     } else {
       throw new Error(`Name must be a non-empty string.`);
     }
+
     if (this.#priceValidation(price)) {
       this.#price = price;
     } else {
