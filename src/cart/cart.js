@@ -35,7 +35,15 @@ export class Cart {
     }
   }
 
-  applyDiscount(strategy) {}
+  applyDiscount(strategy) {
+    const discount = strategy.calculate(this);
+
+    if (typeof discount === "number" && discount >= 0 && !isNaN(discount)) {
+      return 1;
+    } else {
+      throw new Error("Discount must be a non-negative number.");
+    }
+  }
 
   static cartValidation(product, quantity) {
     return Product.productValidation(product) && Number.isInteger(quantity);
