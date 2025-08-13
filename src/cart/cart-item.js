@@ -31,6 +31,6 @@ export class CartItem {
   }
 
   get subtotal() {
-    return this.product.price * this.quantity;
+    return this.#product.price * this.#quantity;
   }
 }

@@ -14,9 +14,9 @@ export class Cart {
   }
 
   get total() {
-    return this.#items
+    return this.items
       .map((item) => item.subtotal)
-      .reduce((accumulator, current) => accumulator + current);
+      .reduce((accumulator, current) => accumulator + current, 0);
   }
 
   addProduct(product, quantity = 1) {
@@ -25,12 +25,12 @@ export class Cart {
     }
 
     if (Number.isInteger(quantity) && quantity > 0) {
-      const index = this.#items.findIndex(
+      const index = this.items.findIndex(
         (item) => item.product.name === product.name
       );
 
       if (index >= 0) {
-        const product = this.#items[index];
+        const product = this.items[index];
         this.#items[index] = { ...product, quantity: product.quantity + 1 };
         return;
       }
@@ -46,7 +46,7 @@ export class Cart {
       throw new Error("Product must be an instance of Product class.");
     }
 
-    this.#items = this.#items.filter(
+    this.#items = this.items.filter(
       (item) => item.product.name !== product.name
     );
   }
