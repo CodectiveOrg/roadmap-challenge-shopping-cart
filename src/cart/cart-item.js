@@ -4,8 +4,12 @@ export class CartItem {
   #product;
   #quantity;
   constructor(product, quantity) {
-    this.#product = new Product(product?.name, product?.price);
-    this.#quantity(quantity);
+    if (!Product.productValidation(product)) {
+      throw new Error("Product must be an instance of Product class.");
+    } else {
+      this.#product = new Product(product?.name, product?.price);
+      this.#quantity(quantity);
+    }
   }
 
   get quantity() {
