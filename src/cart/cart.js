@@ -15,35 +15,40 @@ export class Cart {
 
   get total() {
     return this.#items
-      .map((item) => item.subtotal())
+      .map((item) => item.subtotal)
       .reduce((accumulator, current) => accumulator + current);
   }
 
   addProduct(product, quantity = 1) {
-    if ((!product) instanceof Product) {
+    if (!(product instanceof Product)) {
       throw new Error("Product must be an instance of Product class.");
     }
 
-    if (typeof quantity == "integer" && quantity > 0) {
-      const index = this.#items.findIndex((item) => item.name === product.name);
+    if (Number.isInteger(quantity) && quantity > 0) {
+      const index = this.#items.findIndex(
+        (item) => item.product.name === product.name
+      );
 
-      if (index) {
+      if (index >= 0) {
         const product = this.#items[index];
         this.#items[index] = { ...product, quantity: product.quantity + 1 };
-      } else {
-        this.#items.push(new CartItem(product, quantity));
+        return;
       }
+
+      this.#items.push(new CartItem(product, quantity));
     } else {
       throw new Error("Quantity must be a positive integer.");
     }
   }
 
   removeProduct(product) {
-    if ((!product) instanceof Product) {
+    if (!(product instanceof Product)) {
       throw new Error("Product must be an instance of Product class.");
     }
 
-    this.#items = this.#items.filter(item.name !== product.name);
+    this.#items = this.#items.filter(
+      (item) => item.product.name !== product.name
+    );
   }
 
   applyDiscount(strategy) {
@@ -55,9 +60,8 @@ export class Cart {
 
     const discount = strategy.calculate(this);
 
-    if (!isNaN(discount) && discount >= 0) {
+    if (Number.isInteger(discount) && !isNaN(discount) && discount >= 0) {
       strategy.calculate(this.#items);
-      this.total * discount;
     } else {
       throw new Error("Discount must be a non-negative number.");
     }

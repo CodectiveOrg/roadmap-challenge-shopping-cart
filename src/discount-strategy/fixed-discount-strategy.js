@@ -6,7 +6,7 @@ export class FixedDiscountStrategy extends DiscountStrategy {
 
   constructor(amount) {
     super();
-    if (!isNaN(amount) && amount >= 0) {
+    if (typeof amount === "number" && !isNaN(amount) && amount >= 0) {
       this.#amount = amount;
     } else {
       throw new Error("Amount must be a non-negative number.");
@@ -15,12 +15,12 @@ export class FixedDiscountStrategy extends DiscountStrategy {
 
   calculate(cart) {
     if (cart instanceof Cart) {
-      const total = cart.total();
+      const total = cart.total;
 
-      const afterDiscount = total - this.#amount;
+      const discount = total - this.#amount;
 
-      if (afterDiscount < total) {
-        return afterDiscount;
+      if (discount < total) {
+        return discount;
       }
     } else {
       throw new Error("Cart must be an instance of Cart class.");

@@ -9,7 +9,7 @@ export class Product {
       throw new Error("Name must be a non-empty string.");
     }
 
-    if (typeof price === "number" && price >= 0 && !isNaN(price)) {
+    if (typeof price === "number" && !isNaN(price) && price >= 0 ) {
       this.#price = price;
     } else {
       throw new Error("Price must be a non-negative number.");

@@ -7,7 +7,7 @@ export class DiscountStrategy {
     }
   }
 
-  calculate() {
+  calculate(cart) {
     throw new Error("Subclasses must implement calculate method.");
   }
 }

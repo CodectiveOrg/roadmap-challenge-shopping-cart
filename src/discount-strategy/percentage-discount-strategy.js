@@ -7,7 +7,12 @@ export class PercentageDiscountStrategy extends DiscountStrategy {
   constructor(percentage) {
     super();
 
-    if (!isNaN(percentage) && percentage >= 0 && percentage <= 100) {
+    if (
+      typeof percentage === "number" &&
+      !isNaN(percentage) &&
+      percentage >= 0 &&
+      percentage <= 100
+    ) {
       this.#percentage = percentage;
     } else {
       throw new Error("Percentage must be a number from 0 to 100.");
@@ -16,12 +21,12 @@ export class PercentageDiscountStrategy extends DiscountStrategy {
 
   calculate(cart) {
     if (cart instanceof Cart) {
-      const total = cart.total();
+      const total = cart.total;
 
-      const afterDiscount = total - total * this.#percentage;
+      const discount = total * this.#percentage;
 
-      if (afterDiscount < total) {
-        return afterDiscount;
+      if (discount < total) {
+        return discount;
       }
     } else {
       throw new Error("Cart must be an instance of Cart class.");

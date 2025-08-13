@@ -11,11 +11,7 @@ export class CartItem {
       throw new Error("Product must be an instance of Product class.");
     }
 
-    if (typeof value === "number" && value > 0) {
-      this.#quantity = value;
-    } else {
-      throw new Error("Quantity must be a positive integer.");
-    }
+    this.quantity = quantity;
   }
 
   get product() {
@@ -27,7 +23,7 @@ export class CartItem {
   }
 
   set quantity(value) {
-    if (typeof value === "number" && value > 0) {
+    if (Number.isInteger(value) && value > 0) {
       this.#quantity = value;
     } else {
       throw new Error("Quantity must be a positive integer.");
@@ -35,6 +31,6 @@ export class CartItem {
   }
 
   get subtotal() {
-    return this.#product.price * this.#quantity;
+    return this.product.price * this.quantity;
   }
 }
