@@ -24,21 +24,24 @@ export class Cart {
       throw new Error("Product must be an instance of Product class.");
     }
 
-    if (Number.isInteger(quantity) && quantity > 0) {
-      const index = this.items.findIndex(
-        (item) => item.product.name === product.name
-      );
-
-      if (index >= 0) {
-        const product = this.items[index];
-        this.#items[index] = { ...product, quantity: product.quantity + 1 };
-        return;
-      }
-
-      this.#items.push(new CartItem(product, quantity));
-    } else {
+    if (!Number.isInteger(quantity) || quantity <= 0) {
       throw new Error("Quantity must be a positive integer.");
     }
+
+    const index = this.items.findIndex(
+      (item) => item.product.name === product.name
+    );
+
+    if (index >= 0) {
+      const item = this.items[index];
+      this.#items[index] = {
+        ...item,
+        quantity: item.quantity + 1,
+      };
+      return;
+    }
+
+    this.#items.push(new CartItem(product, quantity));
   }
 
   removeProduct(product) {
@@ -60,10 +63,10 @@ export class Cart {
 
     const discount = strategy.calculate(this);
 
-    if (Number.isInteger(discount) && !isNaN(discount) && discount >= 0) {
-      strategy.calculate(this.#items);
-    } else {
+    if (!Number.isInteger(discount) || Number.isNaN(discount) || discount < 0) {
       throw new Error("Discount must be a non-negative number.");
     }
+    
+    return strategy.calculate(this.items);
   }
 }

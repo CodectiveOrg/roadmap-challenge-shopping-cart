@@ -5,12 +5,11 @@ export class CartItem {
   #quantity;
 
   constructor(product, quantity) {
-    if (product instanceof Product) {
-      this.#product = product;
-    } else {
+    if (!(product instanceof Product)) {
       throw new Error("Product must be an instance of Product class.");
     }
 
+    this.#product = product;
     this.quantity = quantity;
   }
 
@@ -23,11 +22,10 @@ export class CartItem {
   }
 
   set quantity(value) {
-    if (Number.isInteger(value) && value > 0) {
-      this.#quantity = value;
-    } else {
+    if (!Number.isInteger(value) || value <= 0) {
       throw new Error("Quantity must be a positive integer.");
     }
+    this.#quantity = value;
   }
 
   get subtotal() {
