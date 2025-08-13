@@ -5,12 +5,16 @@ import { DiscountStrategy } from "../discount-strategy/discount-strategy";
 export class Cart {
   #items = [];
 
+  constructor() {}
+
   get items() {
     return [...this.#items];
   }
 
   get total() {
-    return this.items.length;
+    if (this.#items.length > 0) {
+      return this.#items.reduce((acc, curr) => curr.subtotal + acc, 0);
+    }
   }
 
   addProduct(product, quantity = 1) {
@@ -43,7 +47,9 @@ export class Cart {
     if (strategy instanceof DiscountStrategy) {
       const discount = strategy.calculate(this);
       if (typeof discount === "number" && discount >= 0) {
-        return (discount / price) * 100;
+        if (this.total > 0) {
+          return this.total - discount;
+        }
       } else {
         throw new Error("Discount must be a non-negative number.");
       }
