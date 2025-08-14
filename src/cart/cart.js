@@ -13,8 +13,6 @@ export class Cart {
 
   get total() {
     if (this.#items.length > 1) {
-      console.log(this.#items.reduce((acc, item) => acc + item.subtotal, 0));
-
       return this.#items.reduce((acc, item) => acc + item.subtotal, 0);
     }
     if (this.#items.length === 1) {
@@ -26,12 +24,15 @@ export class Cart {
   }
 
   addProduct(product, quantity = 1) {
+    let findItem = this.#items.find(
+      (item) => item?.product?.name == product.name
+    );
     if (product instanceof Product) {
       if (Number.isInteger(quantity) && quantity > 0) {
-        if (this.#items.map((item) => item.name == product.name)) {
-          return --quantity;
+        if (product.name === findItem?.product.name) {
+          return new CartItem(product, ++quantity);
         } else {
-          this.#items.push(CartItem(product, quantity));
+          this.#items.push(new CartItem(product, quantity));
         }
       } else {
         throw new Error("Quantity must be a positive integer.");
