@@ -1,6 +1,5 @@
 import { Cart } from "../cart/cart";
 import { DiscountStrategy } from "./discount-strategy";
-import { PercentageDiscountStrategy } from "./percentage-discount-strategy";
 
 export class FixedDiscountStrategy extends DiscountStrategy {
   #amount;
