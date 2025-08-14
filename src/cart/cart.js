@@ -12,8 +12,16 @@ export class Cart {
   }
 
   get total() {
-    if (this.#items.length > 0) {
-      return this.#items.reduce((acc, curr) => curr.subtotal + acc, 0);
+    if (this.#items.length > 1) {
+      console.log(this.#items.reduce((acc, item) => acc + item.subtotal, 0));
+
+      return this.#items.reduce((acc, item) => acc + item.subtotal, 0);
+    }
+    if (this.#items.length === 1) {
+      return this.#items.reduce((acc, item) => acc + item.subtotal, 0);
+    }
+    if (this.#items.length === 0) {
+      return 0;
     }
   }
 

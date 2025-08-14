@@ -16,7 +16,7 @@ export class CartItem {
       quantity > 0 &&
       Number.isInteger(quantity)
     ) {
-      this.#quantity = quantity;
+      this.quantity = quantity;
     } else {
       throw new Error("Quantity must be a positive integer.");
     }
