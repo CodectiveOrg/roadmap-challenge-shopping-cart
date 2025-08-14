@@ -43,9 +43,15 @@ export class Cart {
   }
 
   removeProduct(product) {
+    let findMatchItems = this.#items.filter(
+      (item) => item?.product?.name === product.name
+    );
     if (product instanceof Product) {
-      if (this.#items.map((item) => item.name == product.name)) {
-        return this.items.splice(0, this.items.length);
+      if (findMatchItems.length > 0 && findMatchItems) {
+        let newItems = this.#items.filter(
+          (item) => item?.product.name !== product.name
+        );
+        return newItems;
       }
     } else {
       throw new Error("Product must be an instance of Product class.");
