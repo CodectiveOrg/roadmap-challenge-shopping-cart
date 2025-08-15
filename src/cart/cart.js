@@ -61,9 +61,12 @@ export class Cart {
       throw new Error("Discount must be a non-negative number.");
     }
 
-    const priceAfterDiscount = strategy.calculate(this.items);
-    if (priceAfterDiscount >= 0) {
-      return priceAfterDiscount;
+    const afterDiscount = this.total - discount;
+
+    if (afterDiscount >= 0) {
+      return afterDiscount;
+    } else {
+      return 0;
     }
   }
 }
