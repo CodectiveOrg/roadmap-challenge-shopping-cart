@@ -21,8 +21,14 @@ export class FixedDiscountStrategy extends DiscountStrategy {
     const total = cart.total;
     const discount = this.#amount;
 
+    if (total === 0) {
+      return 0;
+    }
+
     if (discount <= total) {
       return discount;
+    } else {
+      return total;
     }
   }
 }
