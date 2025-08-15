@@ -3,7 +3,7 @@ export class Product {
   #price;
 
   constructor(name, price) {
-    if (typeof name !== "string" || name.trim().length === 0) {
+    if (typeof name !== "string" || name.trim() === "") {
       throw new Error("Name must be a non-empty string.");
     }
 

@@ -14,9 +14,9 @@ export class Cart {
   }
 
   get total() {
-    return this.items
+    return this.#items
       .map((item) => item.subtotal)
-      .reduce((accumulator, current) => accumulator + current, 0);
+      .reduce((accumulator, item) => accumulator + item, 0);
   }
 
   addProduct(product, quantity = 1) {
@@ -28,16 +28,10 @@ export class Cart {
       throw new Error("Quantity must be a positive integer.");
     }
 
-    const index = this.items.findIndex(
-      (item) => item.product.name === product.name
-    );
+    const item = this.items.find((item) => item.product.name === product.name);
 
-    if (index >= 0) {
-      const item = this.items[index];
-      this.#items[index] = {
-        ...item,
-        quantity: item.quantity + 1,
-      };
+    if (item) {
+      item.quantity = item.quantity + quantity;
       return;
     }
 
@@ -49,7 +43,7 @@ export class Cart {
       throw new Error("Product must be an instance of Product class.");
     }
 
-    this.#items = this.items.filter(
+    this.#items = this.#items.filter(
       (item) => item.product.name !== product.name
     );
   }
@@ -66,7 +60,10 @@ export class Cart {
     if (!Number.isInteger(discount) || Number.isNaN(discount) || discount < 0) {
       throw new Error("Discount must be a non-negative number.");
     }
-    
-    return strategy.calculate(this.items);
+
+    const priceAfterDiscount = strategy.calculate(this.items);
+    if (priceAfterDiscount >= 0) {
+      return priceAfterDiscount;
+    }
   }
 }
