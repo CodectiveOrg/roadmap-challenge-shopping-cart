@@ -46,11 +46,9 @@ export class Cart {
 
     for (let i = 0; i < this.#items.length; i++) {
       if (this.#items[i].product.name === product.name) {
-        if (this.#items[i].product.price === product.price) {
-          this.#items[i].quantity += quantity;
+        this.#items[i].quantity += quantity;
 
-          return;
-        }
+        return;
       }
     }
 

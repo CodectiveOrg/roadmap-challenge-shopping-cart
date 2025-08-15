@@ -8,9 +8,11 @@ function main() {
 
   const p1 = new Product("name1", 20);
   const p2 = new Product("name1", 40);
+  const p3 = new Product("name1", 100);
 
   cart.addProduct(p1, 2);
   cart.addProduct(p2, 8);
+  cart.addProduct(p3, 10);
 
   const fixedDiscountStrategy = new PercentageDiscountStrategy(50);
 
