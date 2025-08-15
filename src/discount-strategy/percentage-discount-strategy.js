@@ -18,11 +18,12 @@ export class PercentageDiscountStrategy extends DiscountStrategy {
 
   calculate(cart) {
     if (cart instanceof Cart) {
-      const totoal = cart.total * (this.percentage / 100);
-      if (totoal > 100) {
+      if (this.#percentage < cart.total) {
+        const discount = cart.total * (this.percentage / 100);
+        return discount;
+      } else if (this.#percentage > cart.total) {
         return 100;
       }
-      return;
     } else {
       throw new Error("Cart must be an instance of Cart class.");
     }
