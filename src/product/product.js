@@ -16,10 +16,10 @@ export class Product {
   }
 
   get name() {
-    this.#name;
+    return this.#name;
   }
 
   get price() {
-    this.#price;
+    return this.#price;
   }
 }
