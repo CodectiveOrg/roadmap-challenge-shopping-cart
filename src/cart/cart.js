@@ -47,11 +47,13 @@ export class Cart {
       (item) => item?.product?.name === product.name
     );
     if (product instanceof Product) {
-      if (findMatchItems.length > 0 && findMatchItems) {
+      if (findMatchItems?.length > 0) {
         let newItems = this.#items.filter(
           (item) => item?.product.name !== product.name
         );
         return newItems;
+      } else {
+        return this.#items;
       }
     } else {
       throw new Error("Product must be an instance of Product class.");
@@ -63,6 +65,9 @@ export class Cart {
       const discount = strategy.calculate(this);
       if (typeof discount === "number" && discount >= 0) {
         if (this.total > 0) {
+          if (this.total - discount < 0) {
+            return 0;
+          }
           return this.total - discount;
         }
       } else {
