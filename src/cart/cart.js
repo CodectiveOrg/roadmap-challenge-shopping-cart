@@ -3,80 +3,74 @@ import { CartItem } from "./cart-item";
 import { DiscountStrategy } from "../discount-strategy/discount-strategy";
 
 export class Cart {
-  #items = [];
+  #items;
 
-  constructor() {}
+  constructor() {
+    this.#items = [];
+  }
 
   get items() {
     return [...this.#items];
   }
 
   get total() {
-    if (this.#items.length > 1) {
-      return this.#items.reduce((acc, item) => acc + item.subtotal, 0);
-    }
-    if (this.#items.length === 1) {
-      return this.#items.reduce((acc, item) => acc + item.subtotal, 0);
-    }
-    if (this.#items.length === 0) {
-      return 0;
-    }
+    return this.#items.reduce((acc, item) => acc + item.subtotal, 0);
   }
 
   addProduct(product, quantity = 1) {
-    let findItem = this.#items.find(
-      (item) => item?.product?.name == product.name
+    let existing = this.#items.find(
+      (item) => item.product.name === product.name
     );
-    if (product instanceof Product) {
-      if (Number.isInteger(quantity) && quantity > 0) {
-        if (product.name === findItem?.product.name) {
-          return new CartItem(product, ++quantity);
-        } else {
-          this.#items.push(new CartItem(product, quantity));
-        }
-      } else {
-        throw new Error("Quantity must be a positive integer.");
-      }
-    } else {
+
+    if (!(product instanceof Product)) {
       throw new Error("Product must be an instance of Product class.");
     }
+    if (
+      typeof quantity !== "number" ||
+      !Number.isInteger(quantity) ||
+      quantity <= 0
+    ) {
+      throw new Error("Quantity must be a positive integer.");
+    }
+
+    if (existing) {
+      existing.quantity += quantity;
+      return;
+    }
+    this.#items.push(new CartItem(product, quantity));
   }
 
   removeProduct(product) {
-    let findMatchItems = this.#items.filter(
-      (item) => item?.product?.name === product.name
-    );
-    if (product instanceof Product) {
-      if (findMatchItems?.length > 0) {
-        let newItems = this.#items.filter(
-          (item) => item?.product.name !== product.name
-        );
-        return newItems;
-      } else {
-        return this.#items;
-      }
-    } else {
+    if (!(product instanceof Product)) {
       throw new Error("Product must be an instance of Product class.");
     }
+
+    this.#items = this.#items.filter(
+      (item) => item?.product.name !== product.name
+    );
   }
 
   applyDiscount(strategy) {
-    if (strategy instanceof DiscountStrategy) {
-      const discount = strategy.calculate(this);
-      if (typeof discount === "number" && discount >= 0) {
-        if (this.total > 0) {
-          if (this.total - discount < 0) {
-            return 0;
-          }
-          return this.total - discount;
-        }
-      } else {
-        throw new Error("Discount must be a non-negative number.");
-      }
-    } else {
+    if (!(strategy instanceof DiscountStrategy)) {
       throw new Error(
         "Strategy must be an instance of DiscountStrategy subclass."
       );
     }
+    const discount = strategy.calculate(this);
+    if (
+      typeof discount !== "number" ||
+      Number.isNaN(discount) ||
+      discount < 0
+    ) {
+      throw new Error("Discount must be a non-negative number.");
+    }
+    if (this.total - discount < 0) {
+      return 0;
+    } else {
+      return this.total - discount;
+    }
+    // return Math.max(0, this.total - discount);
   }
 }
+
+// [{ product: { name: "a", price: 1.2 }, quantity: 10 }, { product: {name:"b",  price: 0.5 },quantity: 20 },{ product: {name:"b",  price: 0.5 },quantity: 20 },{ product: {name:"b",  price:88 },quantity: 18 }]
