@@ -6,6 +6,7 @@ export class FixedDiscountStrategy extends DiscountStrategy {
 
   constructor(amount) {
     super();
+
     if (typeof amount !== "number" || Number.isNaN(amount) || amount < 0) {
       throw new Error("Amount must be a non-negative number.");
     }
@@ -20,16 +21,8 @@ export class FixedDiscountStrategy extends DiscountStrategy {
 
     const total = cart.total;
 
-    if (total === 0) {
-      return 0;
-    }
-
     const discount = this.#amount;
 
-    if (discount <= total) {
-      return discount;
-    } else {
-      return total;
-    }
+    return Math.min(total, discount);
   }
 }

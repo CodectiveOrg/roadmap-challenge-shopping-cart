@@ -14,9 +14,10 @@ export class Cart {
   }
 
   get total() {
-    return this.#items
-      .map((item) => item.subtotal)
-      .reduce((accumulator, item) => accumulator + item, 0);
+    return this.#items.reduce(
+      (accumulator, item) => accumulator + item.subtotal,
+      0
+    );
   }
 
   addProduct(product, quantity = 1) {
@@ -28,7 +29,7 @@ export class Cart {
       throw new Error("Quantity must be a positive integer.");
     }
 
-    const item = this.items.find((item) => item.product.name === product.name);
+    const item = this.#items.find((item) => item.product.name === product.name);
 
     if (item) {
       item.quantity = item.quantity + quantity;
@@ -63,10 +64,6 @@ export class Cart {
 
     const afterDiscount = this.total - discount;
 
-    if (afterDiscount >= 0) {
-      return afterDiscount;
-    } else {
-      return 0;
-    }
+    return Math.max(afterDiscount, 0);
   }
 }

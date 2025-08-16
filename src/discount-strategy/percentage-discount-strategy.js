@@ -26,16 +26,8 @@ export class PercentageDiscountStrategy extends DiscountStrategy {
 
     const total = cart.total;
 
-    if (total === 0) {
-      return 0;
-    }
-    
     const discount = (total * this.#percentage) / 100;
 
-    if (discount <= total) {
-      return discount;
-    } else {
-      return total;
-    }
+    return Math.min(total, discount);
   }
 }
