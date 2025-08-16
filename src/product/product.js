@@ -3,26 +3,18 @@ export class Product {
   #price;
 
   constructor(name, price) {
-    if (
-      name &&
-      typeof name === "string" &&
-      typeof name !== "boolean" &&
-      name.length !== 0 &&
-      name.trim().length > 0
-    ) {
-      this.#name = name;
-    } else {
+    if (typeof name !== "string" || name.trim().length === 0) {
       throw new Error("Name must be a non-empty string.");
     }
-    if (price >= 0 && typeof price === "number") {
-      this.#price = price;
-    } else {
+    if (typeof price !== "number" || Number.isNaN(price) || price < 0) {
       throw new Error("Price must be a non-negative number.");
     }
+    this.#name = name.trim();
+    this.#price = price;
   }
 
   get name() {
-    return this.#name.trim();
+    return this.#name;
   }
 
   get price() {
